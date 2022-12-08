@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="icon" href="{% static 'Texture/logo.png' %}" type="image/x-icon"> <!--網站的小圖-->
+    <title>Holographic Display</title>
+    <script type="module" src="{% static "main.js" %}"></script>
+</head>
+<body>
+
+    <div class="bg">
+        <img style="opacity: 0.5;" src="{% static 'Texture/marble.jpeg' %}">
+    </div>
+
+    <div style="margin: 0; padding: 0;">
+        <div>
+            <marquee><p>本系統是由國立東華大學 資訊管理學系 第23屆 畢業專題第三組開發</p></marquee>
+            {% include 'navbar.html' %}
+        </div>
+
+        <div style="margin: 0; padding: 0; position: absolute; text-align: left;"> <!-- 左邊div -->
+
+            <div style="margin:20px 20px 10px 10px;">
+                <button class="home" ><a href='../../../GetHand/'>抓取手部比例</a></button>
+{#                <button class="home" id="data">取得數據</button>#}
+            </div>
+
+            <div style="margin:20px 20px 10px 10px; padding: 10px; border: 2px solid white; background-color: black;"><!-- 左邊方格 -->
+                <center>
+                    <div style="margin: 20px 10px 30px 10px;">
+                        <h3 style="color:white; margin:5px 0 5px 0;">- 背景切換 -</h3>
+                        <div style="margin: 10px 0 10px 0; display: flex;">
+                            <div style="margin: 0 10px 0 15px;">
+                                <p style="margin: 0;color: white;">黑底</p>
+                            </div>
+                            <div style="margin: 0 15px 0 10px;">
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider round" id="back"></span>
+                                </label>
+                            </div>
+                            <div style="margin: 0 10px 0 15px;">
+                                <p style="margin: 0;color: white;">透明</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 style="color:white; margin:10px 0px 5px 0px;">- 手部模型 -</h3>
+                        <button id="female_l" class="model_button">纖細左手</button>
+                        <button id="female_r" class="model_button">纖細右手</button><br/>
+                        <button id="man_l" class="model_button">粗獷左手</button>
+                        <button id="man_r" class="model_button">粗獷右手</button>
+
+                    </div>
+
+                    <div>
+                        <h3 style="color:white; margin:10px 0px 5px 0px;">- 配戴位置 -</h3>
+                        <button id="thumb" class="model_button">拇指</button>
+                        <button id="index" class="model_button">食指</button>
+                        <button id="middle" class="model_button">中指</button><br/>
+                        <button id="ring" class="model_button">無名指</button>
+                        <button id="little" class="model_button">小指</button>
+                    </div>
+
+                    <div style="margin: 40px 0 0 0;">
+                        <h3 style="color:white; margin:10px 0px 5px 0px;">- 戒指顏色 -</h3>
+                        <button id="gold" class="model_button">金</button>
+                        <button id="silver" class="model_button">銀</button>
+                        <button id="rose_gold" class="model_button">玫瑰金</button>
+                    </div>
+                </center>
+            </div>
+
+            {% if object.threeD_model %} <!-- 確認是否有模型 -->
+                <div style="color: transparent; font-size: 0;" id="gltf">{{ object.threeD_model.url}}</div>
+            {% endif %}
+            <div class="product">  <!-- 目前的 -->
+                {% if object.picture %}
+                    <div>
+                        <img style= "width:200px;" src="{{ object.picture.url}}">
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+
+
+        <div style="display: flex; right: 0; position: absolute; flex-direction: column;">  <!-- 右邊方格 -->
+            {% for instance in object_list %}
+                <div class="product2">
+                {% if instance.picture %}
+                    {% if instance.threeD_model %}
+                        <div style="">
+                            <a href="../../../products/{{ instance.id }}/Simulate/">
+                                <img style= "width:150px;" src="{{ instance.picture.url}}">
+                            </a>
+                        </div>
+                    {% endif %}
+                {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+
+{#        <div style="margin: 0; padding: 0; float:right;  position: fixed; border: 2px solid white;"><!-- 右邊div -->#}
+{#            <p style="color: white;">靠右啊啊啊啊啊！</p>#}
+{#        </div>#}
+
+        <canvas style="display: flex; position: fixed; z-index: -999;"></canvas>
+    </div>
+{#    <script type="module" src="main.js"></script> <!--用main.js-->#}
+</body>
+</html>
